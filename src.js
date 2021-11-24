@@ -1,19 +1,3 @@
-// let cardTemplate = 
-//     `<div class="flip-card">
-//         <div class="flip-card-inner" onclick="flip(this)">
-//             <div class="flip-card-front">
-//                 <div class="card-img card-front-img"></div>
-//             </div>
-//             <div class="flip-card-back">
-//                 <div class="card-img card-back-img"></div>
-//             </div>
-//         </div>
-//     </div>`
-
-// for (let i = 1; i <= 12; i++) {
-//     document.body.innerHTML += cardTemplate
-// }
-
 for (let i = 1; i <= 12; i++) {
 
     let flip = document.createElement("div")
