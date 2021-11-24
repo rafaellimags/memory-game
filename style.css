@@ -1,10 +1,21 @@
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+body {
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(4, 150px);
+    gap: 1.6em;
+
+}
 .flip-card {
     background-color: transparent;
-    width: 300px;
-    height: 200px;
-    border: 1px solid #f1f1f1;
+    width: 150px;
+    height: 150px;
     perspective: 1000px;
+    cursor: pointer;
+    /* box-shadow: 0 10px 29px rgb(211, 211, 211 / 49%); */
     /* Remove this if you don't want the 3D effect */
 }
 
@@ -30,8 +41,8 @@
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-    background-color: #bbb;
-    color: black;
+    background-color: cornflowerblue;
+    border-radius: 10px;
 }
 
 /* Style the back side */
@@ -41,7 +52,23 @@
     transform: rotateY(180deg);
 }
 
-img {
-    width: 80px;
-    height: 80px;
+.card-img {
+    height: 100%;
+    width: 100%;
+}
+
+.card-front-img {
+    /* background-color: cornflowerblue; */
+    background-image: url(./img/blue_question_mark_icon.png);
+    background-size: 65%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    filter: saturate(0.9);
+}
+
+.card-back-img {
+    background-color: darkred;
+    background-image: url(./img/red_exclamation_mark.jpeg);
+    background-size: cover;
 }
