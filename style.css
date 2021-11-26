@@ -1,66 +1,59 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
     height: 100vh;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(4, 150px);
-    gap: 1.6em;
-
+    display: flex;
+    background-color: aliceblue;
 }
 
-.flip-card {
-    background-color: transparent;
-    width: 150px;
-    height: 150px;
-    perspective: 1000px;
-    cursor: pointer;
+.memory-game {
+    width: 640px;
+    height: 640px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px;
+    perspective: 1000px; /* GIVES THE BOARD A PERSPECTIVE OF 1000px OF DEPTH*/
 }
 
-.flip-card-inner {
+.memory-card {
+    width: calc(25% - 10px);
+    height: calc(33.333% - 10px);
+    margin: 5px;
     position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
+    transform: scale(1);
+    transform-style: preserve-3d; /* PRESERVES THE 3D EFFECT IN THE PERSPECTIVE OF ITS PARENT */
+    transition: transform 0.5s;
 }
 
-.flip-card-front, .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+/* CLICK ACTION */
+.memory-card:active {
+    transform: scale(.97);
+    transition: transform 0.2s;
 }
 
-.flip-card-front {
-    background-color: cornflowerblue;
-    border-radius: 10px;
-}
-
-.flip-card-back {
-    background-color: dodgerblue;
-    color: white;
+/* CARD ROTATION */
+.memory-card.flip {
     transform: rotateY(180deg);
 }
 
-.card-img {
-    height: 100%;
+
+.front-face, .back-face {
     width: 100%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    background-color: lightcoral;
+    /* 3D EFFECT */
+    backface-visibility: hidden; /* Hides the back face of the card */
 }
 
-.card-front-img {
-    background-image: url(./img/blue_question_mark_icon.png);
-    background-size: 65%;
-    background-position-x: center;
-    background-position-y: center;
-    background-repeat: no-repeat;
-    filter: saturate(0.9);
-}
-
-.card-back-img {
-    background-color: darkred;
-    background-image: url(./img/red_exclamation_mark.jpeg);
-    background-size: cover;
+.front-face {
+    /* 3D EFFECT */
+    transform: rotateY(180deg); /* Rotate the card front face that was hidden */
 }
