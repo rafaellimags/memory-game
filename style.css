@@ -7,7 +7,8 @@
 body {
     height: 100vh;
     display: flex;
-    background-color: aliceblue;
+    background-color: rgb(211, 239, 255);
+    flex-direction: column;
 }
 
 .memory-game {
@@ -26,6 +27,7 @@ body {
     transform: scale(1);
     transform-style: preserve-3d; /* PRESERVES THE 3D EFFECT IN THE PERSPECTIVE OF ITS PARENT */
     transition: transform 0.5s;
+    cursor: pointer;
 }
 
 /* CLICK ACTION */
@@ -54,4 +56,16 @@ body {
 .front-face {
     /* 3D EFFECT */
     transform: rotateY(180deg); /* Rotate the card front face that was hidden */
+}
+
+.score {
+    text-align: center;
+    position: relative;
+    bottom: 50px;
+}
+
+.total-score, .total-time {
+    font-size: 2em;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-weight: bold;
 }

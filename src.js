@@ -1,5 +1,8 @@
 const cards = document.querySelectorAll('.memory-card')
+let scoreBoard = document.querySelector('.total-score')
+
 localStorage.clear()
+
 let flippedAmount = 0
 let firstCard
 let secondCard
@@ -47,7 +50,7 @@ function lockEquals() {
 }
 
 function setScore() {
-    localStorage.setItem('score', score += 10 * multiplier)
+    // localStorage.setItem('score', score += 10 * multiplier)
     multiplier++
     console.log(localStorage);
 }
@@ -70,6 +73,15 @@ function removeMultiplier() {
     document.querySelectorAll(".memory-card").forEach(card => {
         card.style.order = Math.floor(Math.random() * 12)
     });
-})()
+})();
+
+function setScore() {
+    localStorage.setItem('score', score += 10 * multiplier)
+    getScore()
+}
+
+function getScore() {
+    scoreBoard.innerText = `Total Score ${localStorage.getItem('score')}`
+}
 
 cards.forEach(card => card.addEventListener('click', flipCard))
