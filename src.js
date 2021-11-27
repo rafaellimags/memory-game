@@ -66,4 +66,10 @@ function removeMultiplier() {
     multiplier = 1
 }
 
+(function shuffle() {
+    document.querySelectorAll(".memory-card").forEach(card => {
+        card.style.order = Math.floor(Math.random() * 12)
+    });
+})()
+
 cards.forEach(card => card.addEventListener('click', flipCard))
