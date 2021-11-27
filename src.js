@@ -1,44 +1,69 @@
-/* Flipping card */
 const cards = document.querySelectorAll('.memory-card')
-
-let flippedCards = 0
+localStorage.clear()
+let flippedAmount = 0
 let firstCard
 let secondCard
+let score = 0
+let multiplier = 1
 
 function flipCard() {
-    // count flipped amt
-    flippedCards++
 
-    // block board
-    if (flippedCards > 2) return
+    countFlipped()
+
+    if(moreThanTwo()) return
 
     this.classList.add('flip')
 
-    // get images
-    if (flippedCards < 2) {
-        firstCard = this
+    getFlipped(this)
+
+    if (flippedAmount == 2) {
+        firstCard.dataset.image === secondCard.dataset.image
+            ? lockEquals()
+            : unflipCards()
+    }
+}
+
+function countFlipped() {
+    flippedAmount++
+}
+
+function moreThanTwo() {
+    if (flippedAmount > 2) return true
+}
+
+function getFlipped(card) {
+    if (flippedAmount < 2) {
+        firstCard = card
     } else {
-        secondCard = this
+        secondCard = card
     }
+}
 
-    if(flippedCards == 2) {
-        // match images
-        if (firstCard.dataset.image === secondCard.dataset.image) {
-            // remove click
-            firstCard.removeEventListener('click', flipCard)
-            secondCard.removeEventListener('click', flipCard)
-            flippedCards = 0
-            // return true
-        } else {
-            flippedCards = 2
-            setTimeout(() => {
-                firstCard.classList.remove('flip')
-                secondCard.classList.remove('flip')
-                flippedCards = 0
-            }, 1500)
-        }
-    }
+function lockEquals() {
+    firstCard.removeEventListener('click', flipCard)
+    secondCard.removeEventListener('click', flipCard)
+    setScore()
+    flippedAmount = 0
+}
 
+function setScore() {
+    localStorage.setItem('score', score += 10 * multiplier)
+    multiplier++
+    console.log(localStorage);
+}
+
+function unflipCards() {
+    flippedAmount = 2
+    removeMultiplier()
+    setTimeout(() => {
+        firstCard.classList.remove('flip')
+        secondCard.classList.remove('flip')
+        flippedAmount = 0
+    }, 1500)
+}
+
+function removeMultiplier() {
+    multiplier = 1
 }
 
 cards.forEach(card => card.addEventListener('click', flipCard))
