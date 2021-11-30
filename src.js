@@ -1,5 +1,6 @@
 const cards = document.querySelectorAll('.memory-card')
 let scoreBoard = document.querySelector('.total-score')
+let timeBoard = document.querySelector('.total-time')
 
 localStorage.clear()
 
@@ -8,12 +9,19 @@ let firstCard
 let secondCard
 let score = 0
 let multiplier = 1
+let min = 0
+let sec = 0
+let triggerClock = true
 
 function flipCard() {
 
     countFlipped()
 
-    if(moreThanTwo()) return
+    if(flippedAmount > 2) return
+
+    if (triggerClock) countTime()
+
+    triggerClock = false
 
     this.classList.add('flip')
 
@@ -30,10 +38,6 @@ function countFlipped() {
     flippedAmount++
 }
 
-function moreThanTwo() {
-    if (flippedAmount > 2) return true
-}
-
 function getFlipped(card) {
     if (flippedAmount < 2) {
         firstCard = card
@@ -47,12 +51,6 @@ function lockEquals() {
     secondCard.removeEventListener('click', flipCard)
     setScore()
     flippedAmount = 0
-}
-
-function setScore() {
-    // localStorage.setItem('score', score += 10 * multiplier)
-    multiplier++
-    console.log(localStorage);
 }
 
 function unflipCards() {
@@ -75,13 +73,47 @@ function removeMultiplier() {
     });
 })();
 
+function getScore() {
+    scoreBoard.innerText = `Total Score ${localStorage.getItem('score')}`
+}
+
 function setScore() {
+    multiplier++
     localStorage.setItem('score', score += 10 * multiplier)
     getScore()
 }
 
-function getScore() {
-    scoreBoard.innerText = `Total Score ${localStorage.getItem('score')}`
+function hasFinished() {
+    const cardList = [...document.querySelectorAll('.memory-card')]
+    return cardList.every(card => {
+       return card.classList.contains('flip')
+    })
+}
+
+function countTime() {
+
+    let time = handleTimeFormat()
+
+    timeBoard.innerText = time
+    setTimeout(() => {
+        if (hasFinished()) return
+        countTime()
+    }, 1000);
+}
+
+function handleTimeFormat() {
+    sec++
+
+    if (sec > 59) {
+        min++
+        sec = 0
+    }
+
+    if (Number(sec) < 10) {
+        sec = '0' + sec
+    }
+
+    return `Tempo total: ${min}:${sec}`
 }
 
 cards.forEach(card => card.addEventListener('click', flipCard))

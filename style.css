@@ -65,6 +65,7 @@ body {
 }
 
 .total-score, .total-time {
+    display: block;
     font-size: 2em;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-weight: bold;
