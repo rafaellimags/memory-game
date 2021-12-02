@@ -47,13 +47,32 @@ const addClickEvent = () => {
     selectNode('.memory-card').forEach(card => card.addEventListener('click', flipCard))
 }
 
+const previewCards = (isVisible = true, timer = 1000) => {
+    setTimeout(() => {
+        selectNode('.memory-card').forEach(card => {
+            !card.classList.contains('flip')
+                ? card.classList.add('flip')
+                : card.classList.remove('flip')
+
+        })
+        if (!isVisible) return
+        previewCards(false, 3000)
+    }, timer);
+}
+
+const waitForShuffle = () => {
+    setTimeout(shuffle, 5000);
+}
+
 const imagesPromise = generateImagesPromises()
 
 Promise.all(imagesPromise)
     .then(insertImagesIntoCards)
     .then(genereateHTML)
     .then(addClickEvent)
-    .then(shuffle)
+    // .then(showPreview)
+    .then(previewCards)
+    .then(waitForShuffle)
 
 function flipCard() {
 
