@@ -12,12 +12,11 @@ let multiplier = 1
 let min = 0
 let sec = 0
 let triggerClock = true
-let frontImages = []
 
 const createMemoryCard = (imgName, imgSrc) => `
     <div class="memory-card" data-image="${imgName}">
         <img class="front-face" src="${imgSrc}" alt="">
-        <img class="back-face" src="img/blue_question_mark_icon.svg" alt="Question mark badge">
+        <img class="back-face" src="img/back-face-card.png" alt="Question mark badge">
     </div>`.repeat(2)
 
 const createProgressBoard = () => `
@@ -69,10 +68,9 @@ const imagesPromise = generateImagesPromises()
 Promise.all(imagesPromise)
     .then(insertImagesIntoCards)
     .then(genereateHTML)
-    .then(addClickEvent)
-    // .then(showPreview)
     .then(previewCards)
     .then(waitForShuffle)
+    .then(addClickEvent)
 
 function flipCard() {
 
