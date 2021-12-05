@@ -74,14 +74,14 @@ Promise.all(imagesPromise)
 
 function flipCard() {
 
-    countFlipped()
+    if (flippedAmount == 0 || firstCard != secondCard) countFlipped()
     if (flippedAmount > 2) return
     if (triggerClock) countTime()
     triggerClock = false
     this.classList.add('flip')
     getFlipped(this)
 
-    if (flippedAmount == 2) {
+    if (flippedAmount == 2 && firstCard != secondCard) {
         firstCard.dataset.image === secondCard.dataset.image
             ? lockEquals()
             : unflipCards()

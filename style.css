@@ -7,7 +7,7 @@
 body {
     height: 100vh;
     display: flex;
-    background-color: rgb(211, 239, 255);
+    background-color: lightyellow;
     flex-direction: column;
 }
 
@@ -48,7 +48,7 @@ body {
     padding: 20px;
     border-radius: 5px;
     position: absolute;
-    background-color: lightcoral;
+    background-color: rgb(96, 187, 248);
     /* 3D EFFECT */
     backface-visibility: hidden; /* Hides the back face of the card */
 }
