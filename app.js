@@ -49,9 +49,9 @@ const previewCards = (isVisible = true, timer = 1000) => {
     }, timer);
 }
 
-const waitForShuffle = () => {
-    setTimeout(shuffle, 5000);
-}
+const waitForShuffle = () => setTimeout(shuffle, 5000);
+
+const waitForClick = () => setTimeout(addClickEvent, 5500)
 
 const imagesPromise = generateImagesPromises()
 
@@ -60,13 +60,13 @@ Promise.all(imagesPromise)
     .then(genereateHTML)
     .then(previewCards)
     .then(waitForShuffle)
-    .then(addClickEvent)
+    .then(waitForClick)
 
 
-const startClock = (min = 0, sec = 0, state = true) => ({
+const createClock = (min = 0, sec = 0, start = true) => ({
     min,
     sec,
-    start: state,
+    start
 })
 
 const countFlip = () => {
@@ -79,44 +79,53 @@ const countFlip = () => {
     }
 }
 
-const watchFlippedCards = () => {
-    const cards = {}
-    return {
-        setCard: (cardName, cardValue) => cards[cardName] = cardValue,
-        getCard: (cardName) => cards[cardName]
-    }
-}
+const getFlippedCards = (cardName, cardValue) => ({ [cardName]: cardValue })
 
-const countScore = () => {
+function countScore() {
     let score = 0
     let multiplier = 1
     return {
         increaseScore: () => localStorage.setItem('score', score += 10 * (multiplier++)),
         resetMultiplier: () => multiplier = 1,
+        getScore: () => localStorage.getItem('score')
     }
 }
 
+const flipper = countFlip()
+const clock = createClock()
+let flippedCard
+
 function flipCard() {
 
-    flippedCard.setCard(`card_${flipper.getFlipCount() + 1}`, this)
+    flippedCard = {
+        ...flippedCard,
+        ...getFlippedCards(`card${flipper.getFlipCount() + 1}`, this)
+    }
 
-    if (flipper.getFlipCount() == 0 || flippedCard.getCard('card_1') != flippedCard.getCard('card_2')) flipper.incrementFlip()
+    if (flipper.getFlipCount() == 0 || flippedCard.card1 != flippedCard.card2) flipper.incrementFlip()
     if (flipper.getFlipCount() > 2) return
     if (clock.start) countTime()
+
     clock.start = false
+
     this.classList.add('flip')
 
+    matchCards()
+}
 
-    if (flipper.getFlipCount() == 2 && flippedCard.getCard('card_1') != flippedCard.getCard('card_2')) {
-        flippedCard.getCard('card_1').dataset.image === flippedCard.getCard('card_2').dataset.image
+function matchCards() {
+    if (flipper.getFlipCount() == 2 && flippedCard.card1 != flippedCard.card2) {
+        flippedCard.card1.dataset.image === flippedCard.card2.dataset.image
             ? lockEquals()
             : unflipCards()
     }
 }
 
+const score = countScore()
+
 function lockEquals() {
-    flippedCard.getCard('card_1').removeEventListener('click', flipCard)
-    flippedCard.getCard('card_2').removeEventListener('click', flipCard)
+    flippedCard.card1.removeEventListener('click', flipCard)
+    flippedCard.card2.removeEventListener('click', flipCard)
     score.increaseScore()
     flipper.resetCount()
     writeScore()
@@ -126,8 +135,8 @@ function unflipCards() {
     flipper.setCount(2)
     resetMultiplier()
     setTimeout(() => {
-        flippedCard.getCard('card_1').classList.remove('flip')
-        flippedCard.getCard('card_2').classList.remove('flip')
+        flippedCard.card1.classList.remove('flip')
+        flippedCard.card2.classList.remove('flip')
         flipper.resetCount()
     }, 1500)
 }
@@ -143,7 +152,7 @@ function shuffle() {
 };
 
 function writeScore() {
-    selectElement('.total-score').innerText = `Total Score ${localStorage.getItem('score')}`
+    selectElement('.total-score').innerText = `Total Score ${score.getScore()}`
 }
 
 function hasFinished() {
@@ -179,8 +188,3 @@ function handleTimeFormat() {
 
     return `Tempo total: ${clock.min}:${clock.sec}`
 }
-
-const flipper = countFlip()
-const flippedCard = watchFlippedCards()
-const score = countScore()
-const clock = startClock()
